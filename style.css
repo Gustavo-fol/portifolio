@@ -1,31 +1,38 @@
-/* =========================
-   RESET + VARIÁVEIS
-========================= */
+/* =========================================================
+   1. VARIÁVEIS GLOBAIS
+========================================================= */
+:root {
+    --bg: #000;
+    --nav-bg: #0b0b0b;
+    --accent: #00ffcc;
+    --matrix-color: #0f0;
+    --text: #ffffff;
+    --text-muted: #cccccc;
+}
+
+/* =========================================================
+   2. RESET + BASE
+========================================================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --bg: #000;
-    --nav-bg: #0b0b0b;
-    --accent: #00ffcc;
-    --matrix-color: #0f0;
-}
-
-/* =========================
-   BODY
-========================= */
 body {
-    background-color: #000;
-    color: #ffffff;
-    font-family: monospace;
+    background: radial-gradient(circle at top, #050505, #000);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
 }
 
-/* =========================
-   NAVEGAÇÃO 
-========================= */
+section {
+    scroll-margin-top: 80px;
+}
+
+/* =========================================================
+   3. HEADER / NAVEGAÇÃO
+========================================================= */
 .navegacao {
     background-color: var(--nav-bg);
     padding: 1rem;
@@ -33,7 +40,24 @@ body {
     justify-content: space-between;
     align-items: center;
     position: relative;
-    z-index: 10000; /* acima da matrix e overlays */
+    z-index: 10000;
+}
+
+.navegacao ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.navegacao a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.25s;
+}
+
+.navegacao a:hover {
+    color: var(--accent);
 }
 
 .menu-toggle {
@@ -48,61 +72,152 @@ body {
     color: var(--accent);
 }
 
-.navegacao ul {
+/* =========================================================
+   4. LAYOUT GERAL
+========================================================= */
+.container {
     display: flex;
-    gap: 2rem;
-    list-style: none;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
 }
 
-/* Links */
-.navegacao a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: color 0.25s;
-}
-
-.navegacao a:hover {
-    color: var(--accent);
-}
-
-/* =========================
-   RESPONSIVO (MENU)
-========================= */
-@media (max-width: 768px) {
-
-    .navegacao ul {
-        display: none; /* escondido por padrão */
-        flex-direction: column;
-        gap: 1rem;
-
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        padding: 1rem;
-
-        background: var(--nav-bg);
-        z-index: 9999;
-    }
-
-    .navegacao ul.active {
-        display: flex;
-    }
-}
-
-
-/* =========================
-   TOPO
-========================= */
 .topo {
     text-align: center;
     padding: 40px 20px;
 }
 
-/* =========================
-   GRID DOS CÓDIGOS
-========================= */
+/* =========================================================
+   5. HOME / APRESENTAÇÃO
+========================================================= */
+.conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    text-align: center;
+}
+
+.intro-title {
+    font-size: 2.4rem;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeUp 1s ease forwards;
+}
+
+.intro-title span {
+    color: var(--accent);
+}
+
+.intro-desc {
+    margin-top: 1rem;
+    color: var(--accent);
+    font-size: 1.05rem;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp 1s ease forwards;
+    animation-delay: 0.4s;
+}
+
+.cta {
+    margin-top: 1.6rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.cta:hover {
+    background: var(--accent);
+    color: #000;
+}
+
+/* =========================================================
+   6. QUEM SOU EU
+========================================================= */
+.sobre-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.foto-perfil {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    float: left;
+    margin: 0 25px 15px 0;
+    object-fit: cover;
+    shape-outside: circle(50%);
+}
+
+.sobre-container p {
+    margin-bottom: 16px;
+    text-align: justify;
+}
+
+.btn-cv {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 20px;
+    background-color: var(--accent);
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.btn-cv:hover {
+    background-color: #00ccaa;
+}
+
+.destaque {
+    margin-top: 40px;
+    padding: 25px;
+    border-left: 4px solid var(--accent);
+    background-color: #0b0b0b;
+    border-radius: 8px;
+}
+
+/* =========================================================
+   7. EXPECTATIVAS
+========================================================= */
+.expectativas {
+    padding: 80px 10%;
+}
+
+.expectativas h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+    color: var(--accent);
+}
+
+.expectativas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: #0b0b0b;
+    border: 1px solid #111;
+    padding: 25px;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 20px rgba(0,255,204,0.15);
+}
+
+/* =========================================================
+   8. CÓDIGOS / PROJETOS
+========================================================= */
 .lista-codigos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -110,225 +225,55 @@ body {
     padding: 40px;
 }
 
-/* =========================
-   CARD DE CÓDIGO
-========================= */
 .card-codigo {
     background-color: #1a1a1a;
     padding: 25px;
     border-radius: 10px;
     min-height: 55vh;
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
-    position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card-codigo:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 191, 255, 0.35);
-}
-
-/* BADGE */
-.badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #00bfff;
-    color: #fff;
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-}
-
-.card-codigo h2 {
-    margin-bottom: 15px;
-}
-
-/* =========================
-   BLOCO DE CÓDIGO
-========================= */
-.codigo {
-    background-color: #000;
-    color: #00ff88;
-    padding: 20px;
-    font-size: 14px;
-    border-radius: 6px;
-
-    height: 300px;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    user-select: none;
-
-    scrollbar-width: thin;
-    scrollbar-color: #00bfff #111;
-}
-
-.codigo::-webkit-scrollbar {
-    width: 8px;
-}
-.codigo::-webkit-scrollbar-track {
-    background: #111;
-}
-.codigo::-webkit-scrollbar-thumb {
-    background-color: #00bfff;
-    border-radius: 4px;
-}
-
-/* =========================
-   BOTÃO EXECUTAR
-========================= */
-.btn-executar,
-.auto-run {
-    margin-top: 20px;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-
-    background: linear-gradient(135deg, #1e90ff, #00bfff);
-    color: #fff;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s;
-}
-
-.btn-executar:hover,
-.auto-run:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(30, 144, 255, 0.4);
-    background: linear-gradient(135deg, #00bfff, #1e90ff);
-}
-
-/* =========================
-   OVERLAY DO TERMINAL
-========================= */
-#terminal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    z-index: 999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-#terminal-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* =========================
-   TERMINAL BOX
-========================= */
-.terminal-box {
-    background: #111;
-    padding: 20px;
-    border-radius: 10px;
-    width: 700px;
-
-    transform: scale(0.9);
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-#terminal-overlay.active .terminal-box {
-    transform: scale(1);
-    opacity: 1;
-}
-
-/* HEADER DO TERMINAL */
-.terminal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    color: #fff;
-}
-
-.terminal-header button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-/* TERMINAL */
-.terminal {
-    height: 400px;
-    background: #000;
-    color: #00ff00;
-    padding: 15px;
-    border-radius: 8px;
-    overflow-y: auto;
-    font-family: monospace;
-}
-
-.input {
-    display: flex;
-    align-items: center;
-}
-
-.prompt {
-    margin-right: 5px;
-}
-
-.terminal input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #00ff00;
-    font-family: monospace;
-    font-size: 16px;
-}
-
-/* =========================
-   RESPONSIVO
-========================= */
-@media (max-width: 900px) {
-    .lista-codigos {
-        grid-template-columns: 1fr;
-    }
-
-    .terminal-box {
-        width: 90vw;
-        height: 60vh;
+/* =========================================================
+   9. EFEITOS
+========================================================= */
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
+/* =========================================================
+   10. RESPONSIVO
+========================================================= */
 @media (max-width: 768px) {
-
-    .menu-toggle {
-        display: block;
-    }
 
     .navegacao ul {
         display: none;
         flex-direction: column;
-        gap: 1rem;
-
         position: absolute;
         top: 100%;
         left: 0;
         width: 100%;
         padding: 1rem;
         background: var(--nav-bg);
-        z-index: 9999;
     }
 
     .navegacao ul.active {
         display: flex;
+    }
+
+    .foto-perfil {
+        float: none;
+        display: block;
+        margin: 0 auto 20px;
+        shape-outside: none;
+    }
+
+    .btn-cv {
+        width: 100%;
+        text-align: center;
     }
 }
