@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meus Códigos</title>
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navegacao">
+            <button class="menu-toggle"
+            aria-label="Abrir menu"
+            aria-expanded="false">
+            ☰
+            </button>
+            <ul>
+                <li><a href="port.html"> Apresentação</a></li>
+                <li><a href="quem_sou_eu.html">Quem sou eu</a></li>
+                <li><a href="expectativa.html">Expectativas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+<header class="topo">
+    <h1>Meus Códigos</h1>
+    <p>Projetos e lógicas desenvolvidas por mim</p>
+</header>
+
+<main class="lista-codigos">
+
+    <!-- Jogo da Velha -->
+    <div class="card-codigo">
+        <div class="badge">C</div>
+        <h2>Jogo da Velha</h2>
+        <pre class="codigo" id="codigo-jogoVelha">Carregando...</pre>
+        <button class="btn-executar" onclick="openTerminal('jogoVelha')">
+            ▶️ Executar Jogo da Velha
+        </button>
+        <p class="descricao">
+        <strong>Tecnologias:</strong> HTML, CSS Grid, JavaScript<br>
+        <strong>Conceitos:</strong> lógica condicional, controle de estados, eventos de clique
+        </p>
+
+    </div>
+
+    <!-- N-Rainhas -->
+    <div class="card-codigo">
+        <div class="badge">C</div>
+        <h2>N-Rainhas</h2>
+        <pre class="codigo" id="codigo-nrainhas">Carregando...</pre>
+        <button class="btn-executar" onclick="openTerminal('nRainhas')">
+            ▶️ Executar N-Rainhas
+        </button>
+        <p class="descricao">
+        <strong>Tecnologias:</strong> JavaScript, HTML<br>
+        <strong>Conceitos:</strong> backtracking, recursão, validação de posições
+        </p>
+
+    </div>
+
+   <!-- RPG -->
+    <div class="card-codigo">
+        <div class="badge">C</div>
+        <h2>RPG - Eldoria</h2>
+        <pre class="codigo" id="codigo-rpg">Carregando...</pre>
+        <button class="btn-executar" onclick="openTerminal('rpg')">
+            ▶️ Executar RPG
+        </button>
+        <p class="descricao">
+        <strong>Tecnologias:</strong> JavaScript (ES6), HTML<br>
+        <strong>Conceitos:</strong> lógica de combate, enums, estruturas de dados, simulação de terminal
+        </p>
+
+    </div>
+
+    <!-- chatbot -->
+    <div class="card-codigo">
+        <div class="badge">Python</div>
+        <h2>CHAT BOT 1.0</h2>
+        <pre class="codigo" id="codigo-chatbot">Carregando...</pre>
+        <button class="btn-executar" onclick="openTerminal('chatbot')">
+            ▶️ Executar CHATBOT
+        </button>
+        <p class="descricao">
+        <strong>Tecnologias:</strong> HTML, CSS Grid, JavaScript<br>
+        <strong>Conceitos:</strong> entrada/saída via terminal, histórico de mensagens, estrutura preparada para IA
+        </p>
+
+    </div>
+
+</main>
+
+<!-- OVERLAY DO TERMINAL -->
+<div id="terminal-overlay">
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>Terminal</span>
+            <button id="close-terminal">✖</button>
+        </div>
+
+        <div class="terminal">
+            <pre id="terminal-body"></pre>
+            <div class="input">
+                <span class="prompt">$</span>
+                <input id="terminal-input" autocomplete="off">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS Terminal -->
+<script type="module" src="js/terminal.js"></script>
+</body>
+</html>
