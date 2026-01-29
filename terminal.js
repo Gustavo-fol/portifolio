@@ -1,7 +1,7 @@
-import { run as jogoVelha } from "./jogos/jogoVelha.js";
-import { run as nRainhas } from "./jogos/nRainhas.js";
-import { run as rpg } from "./jogos/rpg.js"
-import { run as chatbot_ia } from "./ia/chatbot_ia.js"
+import { run as jogoVelha } from "./jogoVelha.js";
+import { run as nRainhas } from "./nRainhas.js";
+import { run as rpg } from "./rpg.js"
+import { run as chatbot_ia } from "./chatbot_ia.js"
 
 const overlay = document.getElementById("terminal-overlay");
 const closeBtn = document.getElementById("close-terminal");
@@ -103,7 +103,8 @@ function carregarCodigo(idElemento, caminhoArquivo) {
         });
 }
 
-carregarCodigo("codigo-jogoVelha", "js/codes/jogovelha.txt");
-carregarCodigo("codigo-nrainhas", "js/codes/nrainhas.txt");
-carregarCodigo("codigo-rpg", "js/codes/rpg.txt");
-carregarCodigo("codigo-chatbot", "js/codes/chatbot_ia.txt");
+carregarCodigo("codigo-jogoVelha", "jogovelha.txt");
+carregarCodigo("codigo-nrainhas", "nrainhas.txt");
+carregarCodigo("codigo-rpg", "rpg.txt");
+carregarCodigo("codigo-chatbot", "chatbot_ia.txt");
+
