@@ -1,0 +1,211 @@
+:root {
+    --bg: #000;
+    --nav-bg: #0b0b0b;
+    --accent: #00ffcc;
+    --matrix-color: #0f0;
+}
+
+/* ===== BASE ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+}
+
+/* ===== NAVEGAÇÃO ===== */
+.navegacao {
+    background-color: var(--nav-bg);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 10000; /* sempre acima da Matrix */
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+}
+
+.menu-toggle:hover { color: var(--accent); }
+
+.navegacao ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+/* Links */
+.navegacao a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.25s;
+}
+.navegacao a:hover { color: var(--accent); }
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .navegacao ul {
+        display: none; /* escondido por padrão no mobile */
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        background: var(--nav-bg);
+        z-index: 9999; /* garante que fique sobre a Matrix */
+    }
+
+    .navegacao ul.active {
+        display: flex; /* visível quando toggle é ativado */
+    }
+}
+@media (max-width: 768px) {
+
+    .foto-perfil {
+        float: none;                 /* remove o float */
+        display: block;
+        margin: 0 auto 20px auto;     /* centraliza */
+        shape-outside: none;          /* desliga o contorno */
+    }
+
+}
+@media (max-width: 768px) {
+
+    .sobre-container {
+        margin: 30px auto;
+        padding: 15px;
+    }
+
+}
+@media (max-width: 768px) {
+
+    .sobre-container p {
+        font-size: 0.95rem;
+        text-align: left; /* melhor leitura no mobile */
+    }
+
+}
+@media (max-width: 768px) {
+
+    .destaque {
+        padding: 20px;
+        margin-top: 30px;
+    }
+
+    .destaque h2 {
+        font-size: 1.1rem;
+    }
+
+}
+@media (max-width: 768px) {
+
+    .btn-cv {
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+}
+
+/* ===== CONTAINER / APRESENTAÇÃO ===== */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 56px); /* tela inteira menos nav */
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 6; /* acima da matrix */
+    padding: 2rem;
+}
+
+.conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+}
+
+.intro-title {
+    color: white;
+    font-size: 2.4rem;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeUp 1s ease forwards;
+    animation-delay: 0.2s;
+}
+.intro-title span {
+    color: var(--accent);
+    font-size: 2.6rem;
+}
+
+.intro-desc {
+    margin-top: 1rem;
+    color: var(--accent);
+    font-size: 1.05rem;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp 1s ease forwards;
+    animation-delay: 0.6s;
+}
+
+.cta {
+    display: inline-block;
+    margin-top: 1.6rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background .2s, color .2s;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp 1s ease forwards;
+    animation-delay: 1s;
+}
+.cta:hover { background: var(--accent); color: #000; }
+
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== MATRIX ===== */
+.matrix {
+    position: fixed;
+    inset: 0;
+    pointer-events: none; /* não bloqueia cliques */
+    overflow: hidden;
+    z-index: 1; /* fica no fundo */
+}
+
+.matrix .drop {
+    position: absolute;
+    top: -20vh;
+    white-space: nowrap;
+    font-family: "Courier New", Courier, monospace;
+    color: var(--matrix-color);
+    opacity: 0.85;
+    text-shadow: 0 0 6px rgba(0,255,160,0.12);
+    transform: translateY(-100%);
+    animation-name: matrix-fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes matrix-fall {
+    0% { transform: translateY(-120vh); opacity: 0.05; }
+    10% { opacity: 0.4; }
+    80% { opacity: 0.9; }
+    100% { transform: translateY(120vh); opacity: 0.0; }
+}
