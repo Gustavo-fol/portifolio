@@ -20,7 +20,7 @@ Este repositório reúne meu portfólio e alguns projetos desenvolvidos durante 
 Meu site pessoal com informações sobre mim e meus projetos.
 
 **Como visualizar:**
-- Abra o arquivo `port.html` diretamente no navegador.
+- Abra o seguinte link `https://Gustavo-fol.github.io/portifolio/` diretamente no navegador.
 
 ---
 
@@ -31,7 +31,6 @@ Implementação simples do jogo da velha para fins de estudo de lógica de progr
 - Abra o arquivo correspondente ao projeto (dependendo da versão/language).
 
 ---
-
 ## 📂 Como clonar o repositório
 
 ```bash
