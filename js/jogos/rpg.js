@@ -279,3 +279,4 @@ async function main() {
 // Executa o jogo
 await main();
 }
+
