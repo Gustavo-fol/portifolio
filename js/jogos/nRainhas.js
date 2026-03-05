@@ -114,3 +114,4 @@ export async function run(print, scanf) {
         print("Opção inválida!");
     }
 }
+
