@@ -1,0 +1,331 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <time.h>
+
+#define MAX_NOME 50
+#define NUM_MONSTRO 10
+#define CHANCE_CRITICO 0.10f
+#define MULT_CRITICO 1.50f
+#define CHANCE_FUGA 0.50f
+#define DANO_FUGA_FALHA 0.10f
+#define CURA_POCAO 0.20f
+#define PODER_ESCALONAMENTO 5.0f
+#define NIVEL_ESCALONAMENTO 8
+#define MAX_POCOES 3
+
+float teto_dano; 
+
+typedef enum {
+    GUERREIRO,
+    ESTUDIOSO,
+    LADINO
+} CLASSE;
+
+typedef enum {
+    REGIAO_FLORESTA,
+    REGIAO_MONTANHAS,
+    REGIAO_ABISMO
+} REGIAO;
+
+typedef struct {
+    char nome[MAX_NOME];
+    CLASSE classe;
+    float hp;
+    float poder;
+    int vitorias;
+    int derrotas;
+    int pocoes;
+    int maior_nivel_derrotado;
+    int escalonamento_ativo;
+    float chance_fuga;
+} HEROI;
+
+typedef struct {
+    int nivel;
+    char nome_base[MAX_NOME];
+    float hp_base;
+    float poder_base;
+    int variacao_rand;
+} MONSTRO_BASE;
+
+typedef struct {
+    int nivel;
+    char nome_base[MAX_NOME];
+    float hp;
+    float poder;
+} MONSTRO;
+
+const MONSTRO_BASE catalogo_monstro[NUM_MONSTRO] = {
+    {1, "Rastejante das Sombras", 40.0f, 10.0f, 3},
+    {2, "Lobo das Brumas", 55.0f, 18.0f, 4},
+    {3, "Goblin Saqueador", 70.0f, 26.0f, 5},
+    {4, "Arqueiro Espectral", 80.0f, 34.0f, 6},
+    {5, "Guardião de Pedra", 95.0f, 42.0f, 7},
+    {6, "Feiticeiro Caído", 110.0f, 50.0f, 8},
+    {7, "Górgona Crepuscular", 125.0f, 60.0f, 9},
+    {8, "Quimera Rubra", 140.0f, 72.0f, 10},
+    {9, "Titã do Trovão", 160.0f, 85.0f, 12},
+    {10, "Dragão Abissal", 200.0f, 100.0f, 15}
+};
+
+int randint(int min, int max) {
+    return min + rand() % (max - min + 1);
+}
+
+void initialize_hero(HEROI *heroi, char *nome, CLASSE classe) {
+    strcpy(heroi->nome, nome);
+    heroi->classe = classe;
+
+    if (classe == GUERREIRO) {
+        heroi->hp = 120.0f;
+        heroi->poder = 0.0f;
+        heroi->chance_fuga = CHANCE_FUGA;
+    } else if (classe == ESTUDIOSO) {
+        heroi->hp = 100.0f;
+        heroi->poder = 10.0f;
+        heroi->chance_fuga = CHANCE_FUGA;
+    } else if (classe == LADINO) {
+        heroi->hp = 100.0f;
+        heroi->poder = 0.0f;
+        heroi->chance_fuga = CHANCE_FUGA * 1.2f;
+    }
+
+    heroi->vitorias = 0;
+    heroi->derrotas = 0;
+    heroi->pocoes = MAX_POCOES;
+    heroi->maior_nivel_derrotado = 0;
+    heroi->escalonamento_ativo = 0;
+}
+
+REGIAO escolher_regiao() {
+    int opcao;
+    printf("\nEscolha a região da batalha:\n");
+    printf("1. Floresta Sombria (monstros -10%% HP e -10%% poder)\n");
+    printf("2. Montanhas Rubras (monstros normais)\n");
+    printf("3. Abismo Ecoante (monstros +15%% HP e +15%% poder)\n");
+    printf("Digite o número da região: ");
+    scanf("%d", &opcao);
+
+    while (opcao < 1 || opcao > 3) {
+        printf("Opção inválida. Digite novamente: ");
+        scanf("%d", &opcao);
+    }
+
+    return (REGIAO)(opcao - 1);
+}
+
+MONSTRO generate_monster(int nivel, int escalonamento_ativo, REGIAO regiao) {
+    MONSTRO monstro;
+    MONSTRO_BASE base_tipo = catalogo_monstro[nivel - 1];
+
+    float poder_base_ajustado = base_tipo.poder_base;
+
+    // Escalonamento tardio
+    if (escalonamento_ativo && nivel >= NIVEL_ESCALONAMENTO) {
+        poder_base_ajustado += PODER_ESCALONAMENTO;
+    }
+
+    int variacao = base_tipo.variacao_rand;
+    float poder_aleatorio = (float)randint(-variacao, variacao);
+
+    monstro.hp = base_tipo.hp_base;
+    monstro.poder = poder_base_ajustado + poder_aleatorio;
+    if (monstro.poder < 0.0f) monstro.poder = 0.0f;
+
+    // Aplicação das regiões
+    switch (regiao) {
+        case REGIAO_FLORESTA:
+            monstro.hp *= 0.90f;
+            monstro.poder *= 0.90f;
+            break;
+        case REGIAO_ABISMO:
+            monstro.hp *= 1.15f;
+            monstro.poder *= 1.15f;
+            break;
+        case REGIAO_MONTANHAS:
+        default:
+            break;
+    }
+
+    strcpy(monstro.nome_base, base_tipo.nome_base);
+    monstro.nivel = nivel;
+    return monstro;
+}
+
+void mostrar_status(HEROI heroi) {
+    printf("\n--- Status do Heroi ---\n");
+    printf("Nome: %s\n", heroi.nome);
+    printf("HP: %.2f\n", heroi.hp);
+    printf("Poder: %.2f\n", heroi.poder);
+    printf("Vitorias: %d\n", heroi.vitorias);
+    printf("Derrotas: %d\n", heroi.derrotas);
+    printf("Pocoes restantes: %d\n", heroi.pocoes);
+    printf("Maior nivel derrotado: %d\n", heroi.maior_nivel_derrotado);
+    printf("Escalonamento ativo: %s\n", heroi.escalonamento_ativo ? "Sim" : "Nao");
+}
+
+void combate(HEROI *heroi, MONSTRO *monstro) {
+    printf("\n--- Combate ---\n");
+
+    printf("Heroi: Poder %.2f, HP %.2f\n", heroi->poder, heroi->hp);
+    printf("Monstro (%s Nivel %d): Poder %.2f, HP %.2f\n",
+           monstro->nome_base, monstro->nivel, monstro->poder, monstro->hp);
+
+    float diff = fabs(heroi->poder - monstro->poder);
+    float max_poder = fmax(heroi->poder, monstro->poder);
+    float perc = (max_poder == 0.0f) ? 0.0f : diff / max_poder;
+
+    if (perc > teto_dano) perc = teto_dano;
+
+    int critico = (rand() / (float)RAND_MAX) < CHANCE_CRITICO;
+    if (critico) {
+        perc *= MULT_CRITICO;
+        printf("Golpe critico!\n");
+    }
+
+    if (heroi->poder > monstro->poder) {
+        monstro->hp -= monstro->hp * perc;
+        heroi->vitorias++;
+
+        if (monstro->nivel > heroi->maior_nivel_derrotado)
+            heroi->maior_nivel_derrotado = monstro->nivel;
+
+        if (monstro->nivel >= NIVEL_ESCALONAMENTO)
+            heroi->escalonamento_ativo = 1;
+
+        printf("Heroi venceu!\n");
+    } else {
+        heroi->hp -= heroi->hp * perc;
+        heroi->derrotas++;
+        printf("Monstro venceu!\n");
+    }
+
+    float ganho = 1.5f * diff;
+    heroi->poder += ganho;
+    printf("Ganho de poder: %.2f\n", ganho);
+}
+
+void relatorio_final(HEROI heroi) {
+    printf("\n--- Relatorio Final ---\n");
+    printf("Nome: %s\n", heroi.nome);
+    printf("Classe: %s\n", heroi.classe == GUERREIRO ? "Guerreiro"
+                        : heroi.classe == ESTUDIOSO ? "Estudioso" : "Ladino");
+    printf("Vitorias: %d\n", heroi.vitorias);
+    printf("Derrotas: %d\n", heroi.derrotas);
+    printf("Maior nivel derrotado: %d\n", heroi.maior_nivel_derrotado);
+    printf("Poder final: %.2f\n", heroi.poder);
+    printf("HP final: %.2f\n", heroi.hp);
+}
+
+CLASSE escolher_classe() {
+    int opcao;
+    printf("Escolha a classe do heroi:\n");
+    printf("1. Guerreiro (HP: 120, Poder: 0)\n");
+    printf("2. Estudioso (HP: 100, Poder: 10)\n");
+    printf("3. Ladino (HP: 100, Poder: 0, +20%% fuga)\n");
+    printf("Digite o número: ");
+    scanf("%d", &opcao);
+
+    while (opcao < 1 || opcao > 3) {
+        printf("Opção inválida. Digite novamente: ");
+        scanf("%d", &opcao);
+    }
+    return (CLASSE)(opcao - 1);
+}
+int registro(HEROI heroi)
+{
+    FILE *jogadores;
+    if ((jogadores = fopen("jogadores.txt","w"))!=NULL)
+    {
+         fprintf(jogadores,"RA: 230027389;Regelvis Gustavo;%s;%d;%d;%d;%f",heroi.nome,heroi.vitorias,heroi.derrotas,heroi.maior_nivel_derrotado,heroi.poder);
+    }
+    fclose(jogadores);
+    return 1;
+    
+}
+
+int main() {
+    srand(time(NULL));
+
+    printf("Bem-vindo a Eldoria!\n");
+
+    
+    printf("Digite o teto de dano (0.10 a 0.50): ");
+    scanf("%f", &teto_dano);
+
+    if (teto_dano < 0.10f) teto_dano = 0.0f;
+    if (teto_dano > 0.50f) teto_dano = 0.80f;
+
+    char nome[MAX_NOME];
+    printf("Digite o nome do heroi: ");
+    getchar(); 
+    fgets(nome, MAX_NOME, stdin);
+    nome[strcspn(nome, "\n")] = 0;
+
+    CLASSE classe = escolher_classe();
+    REGIAO regiao = escolher_regiao();
+
+    HEROI heroi;
+    initialize_hero(&heroi, nome, classe);
+
+    while (heroi.hp > 0.0f) {
+        mostrar_status(heroi);
+
+        int nivel;
+        printf("\nEscolha o nivel do monstro (1-10) ou 0 para sair: ");
+        scanf("%d", &nivel);
+
+        if (nivel == 0) break;
+        if (nivel < 1 || nivel > 10) {
+            printf("Nivel invalido!\n");
+            continue;
+        }
+
+        char tentar_fugir;
+        printf("Tentar fugir? (s/n): ");
+        scanf(" %c", &tentar_fugir);
+
+        if (tentar_fugir == 's' || tentar_fugir == 'S') {
+            if ((rand() / (float)RAND_MAX) < heroi.chance_fuga) {
+                printf("Fuga bem-sucedida!\n");
+                continue;
+            } else {
+                float dano = heroi.hp * DANO_FUGA_FALHA;
+                heroi.hp -= dano;
+                printf("Fuga falhou! Perdeu %.2f HP.\n", dano);
+            }
+        }
+
+       
+        MONSTRO monstro = generate_monster(nivel, heroi.escalonamento_ativo, regiao);
+
+        combate(&heroi, &monstro);
+
+        if (heroi.pocoes > 0) {
+            char usar;
+            printf("Usar pocao? (s/n): ");
+            scanf(" %c", &usar);
+
+            if (usar == 's' || usar == 'S') {
+                heroi.hp += heroi.hp * CURA_POCAO;
+                if (heroi.hp > 120.0f) heroi.hp = 120.0f;
+                heroi.pocoes--;
+                printf("Pocao usada! HP agora: %.2f\n", heroi.hp);
+            }
+        }
+    }
+
+    if (heroi.hp <= 0.0f) {
+        printf("\nGame Over! Seu HP chegou a zero.\n");
+        relatorio_final(heroi);
+    } else {
+        relatorio_final(heroi);
+    }
+    printf("\nDesenvolvido por [Regelvis Gustavo \t RA: 230027389]\n");
+    registro(heroi);
+
+ 
+    return 0;
+}

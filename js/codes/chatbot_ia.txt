@@ -1,0 +1,45 @@
+def respostabot (mensagem):
+  return "BOT:resposta"
+
+print("Seja bem-vindo ao nosso chatbot de dúvidas!")
+print("Para sair, digite 'x'")
+print("-" * 40)
+mensagens = []
+duvidas = []
+resposta = respostabot(mensagem)
+while True:
+    duvida = input("Você: ").strip()  # Lê a dúvida do usuário
+
+    if duvida.lower() == "x":
+        break
+
+    if not duvida:  # Evita entradas vazias
+        print("BOT: Por favor, digite uma dúvida válida.")
+        continue
+
+    # Gera a resposta do bot
+    resposta = respostabot(duvida)
+
+    # Exibe a resposta
+    print(f"BOT: {resposta}")
+
+    # Salva no histórico
+    mensagens.append({"user": duvida, "bot": resposta})
+
+    # Adiciona à lista de dúvidas para verificar repetidas
+    duvidas.append(duvida)
+
+print("-" * 40)
+print("Histórico de conversa:")
+for msg in mensagens:
+    print(f"Usuário: {msg['user']}")
+    print(f"BOT: {msg['bot']}")
+    print("-" * 20)
+
+# Detecta dúvidas repetidas
+repetidas = set([d for d in duvidas if duvidas.count(d) > 1])
+if repetidas:
+    print("Dúvidas repetidas detectadas:", repetidas)
+else:
+    print("Nenhuma dúvida foi repetida.")
+print("Saindo...")
