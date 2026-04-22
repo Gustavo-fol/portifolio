@@ -1,0 +1,176 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+.sobre-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.foto-perfil {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    float: left;
+    margin: 0 25px 15px 0;
+
+    object-fit: cover;
+
+    /* ISSO FAZ O TEXTO CONTORNAR O CÍRCULO */
+    shape-outside: circle(50%);
+}
+
+.sobre-container p {
+    margin-bottom: 16px;
+    text-align: justify;
+}
+
+.btn-cv {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 20px;
+    background-color: #00ffcc;
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.btn-cv:hover {
+    background-color: #00ccaa;
+}
+
+.clear {
+    clear: both;
+}
+
+.destaque {
+    margin-top: 40px;
+    padding: 25px;
+    border-left: 4px solid #00ffcc;
+    background-color: #0b0b0b;
+    border-radius: 8px;
+}
+
+.destaque h2 {
+    margin-bottom: 10px;
+    color: #00ffcc;
+    font-size: 1.2rem;
+}
+
+.destaque p {
+    margin: 0;
+    color: #e0e0e0;
+}
+
+:root {
+    --nav-bg: #0b0b0b;
+    --accent: #00ffcc;
+}
+
+/* ===== NAVEGAÇÃO ===== */
+.navegacao {
+    background-color: var(--nav-bg);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 10000; /* sempre acima da Matrix */
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+}
+
+.menu-toggle:hover { color: var(--accent); }
+
+.navegacao ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+/* Links */
+.navegacao a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.25s;
+}
+.navegacao a:hover { color: var(--accent); }
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .navegacao ul {
+        display: none; /* escondido por padrão no mobile */
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        background: var(--nav-bg);
+        z-index: 9999; /* garante que fique sobre a Matrix */
+    }
+
+    .navegacao ul.active {
+        display: flex; /* visível quando toggle é ativado */
+    }
+}
+@media (max-width: 768px) {
+
+    .foto-perfil {
+        float: none;                 /* remove o float */
+        display: block;
+        margin: 0 auto 20px auto;     /* centraliza */
+        shape-outside: none;          /* desliga o contorno */
+    }
+
+}
+@media (max-width: 768px) {
+
+    .sobre-container {
+        margin: 30px auto;
+        padding: 15px;
+    }
+
+}
+@media (max-width: 768px) {
+
+    .sobre-container p {
+        font-size: 0.95rem;
+        text-align: left; /* melhor leitura no mobile */
+    }
+
+}
+@media (max-width: 768px) {
+
+    .destaque {
+        padding: 20px;
+        margin-top: 30px;
+    }
+
+    .destaque h2 {
+        font-size: 1.1rem;
+    }
+
+}
+@media (max-width: 768px) {
+
+    .btn-cv {
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+}
