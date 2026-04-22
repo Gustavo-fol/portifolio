@@ -1,7 +1,11 @@
-
+/* script.js — versão aumentada
+   - Mais colunas (densidade)
+   - Trocas de números mais rápidas (freq)
+   - Adaptativo para evitar travar em telas pequenas
+*/
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Menu
+    // Menu (mantive para continuidade)
     const toggle = document.querySelector('.menu-toggle');
     const menu = document.querySelector('.navegacao ul');
     if (toggle && menu) {
@@ -111,4 +115,3 @@ function makeNumberString(n) {
     for (let i = 0; i < n; i++) s += Math.floor(Math.random() * 10);
     return s;
 }
-
