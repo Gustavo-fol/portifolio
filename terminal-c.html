@@ -1,150 +1,148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>Simulador C - Portfólio</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simulador C - Portfólio</title>
 
-<style>
-body {
-    background:#111;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    margin:0;
-    font-family: monospace;
-}
+    <style>
+      body {
+        background: #111;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: monospace;
+      }
 
-.terminal {
-    width:700px;
-    height:400px;
-    background:black;
-    color:#00ff00;
-    padding:15px;
-    box-sizing:border-box;
-    overflow-y:auto;
-    border-radius:8px;
-    box-shadow:0 0 20px rgba(0,255,0,.3);
-}
+      .terminal {
+        width: 700px;
+        height: 400px;
+        background: black;
+        color: #00ff00;
+        padding: 15px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+      }
 
-.line {
-    white-space:pre-wrap;
-}
+      .line {
+        white-space: pre-wrap;
+      }
 
-.input {
-    display:flex;
-    align-items:center;
-}
+      .input {
+        display: flex;
+        align-items: center;
+      }
 
-.prompt {
-    margin-right:5px;
-}
+      .prompt {
+        margin-right: 5px;
+      }
 
-input {
-    flex:1;
-    background:transparent;
-    border:none;
-    outline:none;
-    color:#00ff00;
-    font-family: monospace;
-    font-size:16px;
-}
-button {
-    margin-top:10px;
-    padding:8px 12px;
-    background:#00ff00;
-    border:none;
-    cursor:pointer;
-    font-weight:bold;
-}
-</style>
-</head>
+      input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #00ff00;
+        font-family: monospace;
+        font-size: 16px;
+      }
+      button {
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: #00ff00;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+    </style>
+  </head>
 
-<body>
-
-<div>
-    <div class="terminal" id="terminal">
+  <body>
+    <div>
+      <div class="terminal" id="terminal">
         <div class="line">Simulador C - Portfólio</div>
-        <div class="line">te apresento a minha primeira tentativa de um terminal virtual <br> modelo em que quem não tem como pagar um servidor ou possui um pc fraco pode te ajudar</div>
+        <div class="line">
+          te apresento a minha primeira tentativa de um terminal virtual <br />
+          modelo em que quem não tem como pagar um servidor ou possui um pc
+          fraco pode te ajudar
+        </div>
         <div class="line">Digite: gcc main.c</div>
         <div class="line">Depois: ./a.out</div>
-        <br>
+        <br />
         <div class="input">
-            <span class="prompt">$</span>
-            <input id="cmd" autocomplete="off">
+          <span class="prompt">$</span>
+          <input id="cmd" autocomplete="off" />
         </div>
+      </div>
+
+      <button onclick="runAuto()">▶ Executar</button>
     </div>
 
-    <button onclick="runAuto()">▶ Executar</button>
-</div>
+    <script>
+      const terminal = document.getElementById("terminal");
+      const input = document.getElementById("cmd");
 
-<script>
-const terminal = document.getElementById("terminal");
-const input = document.getElementById("cmd");
+      let compiled = false;
 
-let compiled = false;
+      input.focus();
 
-input.focus();
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          const command = input.value.trim();
+          print("$ " + command);
+          input.value = "";
+          process(command);
+        }
+      });
 
-input.addEventListener("keydown", function(e){
-    if(e.key === "Enter"){
-        const command = input.value.trim();
-        print("$ " + command);
-        input.value = "";
-        process(command);
-    }
-});
+      function print(text) {
+        const div = document.createElement("div");
+        div.className = "line";
+        div.textContent = text;
+        terminal.insertBefore(div, terminal.lastElementChild);
+        terminal.scrollTop = terminal.scrollHeight;
+      }
 
-function print(text){
-    const div = document.createElement("div");
-    div.className = "line";
-    div.textContent = text;
-    terminal.insertBefore(div, terminal.lastElementChild);
-    terminal.scrollTop = terminal.scrollHeight;
-}
-
-function process(cmd){
-    if(cmd === "gcc main.c"){
-        print("Compilando...");
-        setTimeout(()=>{
+      function process(cmd) {
+        if (cmd === "gcc main.c") {
+          print("Compilando...");
+          setTimeout(() => {
             print("Compilação concluída com sucesso.");
             compiled = true;
-        },1000);
-    }
-    else if(cmd === "./a.out"){
-        if(!compiled){
+          }, 1000);
+        } else if (cmd === "./a.out") {
+          if (!compiled) {
             print("Erro: programa não compilado.");
             return;
-        }
-        print("Executando programa...");
-        setTimeout(()=>{
+          }
+          print("Executando programa...");
+          setTimeout(() => {
             print("Bem-vindo ao Jogo da Velha!");
             print("Jogador X venceu!");
-        },800);
-    }
-    else if(cmd === "clear"){
-        terminal.innerHTML = `
+          }, 800);
+        } else if (cmd === "clear") {
+          terminal.innerHTML = `
         <div class="line">Simulador C - Portfólio</div>
         <div class="input">
             <span class="prompt">$</span>
             <input id="cmd" autocomplete="off">
         </div>`;
-        location.reload();
-    }
-    else{
-        print("Comando não reconhecido.");
-    }
-}
+          location.reload();
+        } else {
+          print("Comando não reconhecido.");
+        }
+      }
 
-function runAuto(){
-    print("$ gcc main.c");
-    process("gcc main.c");
-    setTimeout(()=>{
-        print("$ ./a.out");
-        process("./a.out");
-    },1500);
-}
-</script>
-
-</body>
+      function runAuto() {
+        print("$ gcc main.c");
+        process("gcc main.c");
+        setTimeout(() => {
+          print("$ ./a.out");
+          process("./a.out");
+        }, 1500);
+      }
+    </script>
+  </body>
 </html>
