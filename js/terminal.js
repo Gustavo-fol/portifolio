@@ -1,5 +1,5 @@
 import { run as jogoVelha } from "./jogos/jogovelha.js";
-import { run as nRainhas } from "./jogos/nRainhas.js";
+import { run as nRainhas } from "./jogos/nrainhas.js";
 import { run as rpg } from "./jogos/rpg.js"
 import { run as chatbot_ia } from "./ia/chatbot_ia.js"
 
